@@ -1,0 +1,444 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* ===== MODE FOKUS: semi maroon ===== */
+  background: linear-gradient(135deg, #4a1c2b, #7b2d42 55%, #9e4a5c);
+  padding: 16px;
+  transition: background 1.2s ease;
+  overflow-x: hidden;
+}
+
+/* ===== MODE ISTIRAHAT: biru muda ===== */
+body.break-mode {
+  background: linear-gradient(135deg, #cfe8ff, #a8d4f0 55%, #7fb8dd);
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  transition: background 1.2s ease, border-color 1.2s ease, color 1.2s ease,
+              box-shadow 1.2s ease;
+}
+
+/* Container istirahat: kaca terang kebiruan */
+body.break-mode .container {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #1c3d5a;
+  box-shadow: 0 20px 50px rgba(43, 88, 128, 0.25);
+}
+
+.mode-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0.8;
+  margin-bottom: 12px;
+  transition: color 1s ease;
+}
+
+/* Label istirahat: biru tua lembut */
+body.break-mode .mode-label {
+  color: #2b5878;
+}
+
+.timer {
+  font-size: clamp(3rem, 18vw, 5rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  line-height: 1;
+  transition: color 1s ease, text-shadow 1s ease;
+}
+
+/* Angka timer istirahat: biru tua */
+body.break-mode .timer {
+  color: #1c3d5a;
+  text-shadow: 0 4px 24px rgba(127, 184, 221, 0.5);
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.75;
+  margin-bottom: 20px;
+  min-height: 20px;
+  transition: color 1s ease, opacity 1s ease;
+}
+
+body.break-mode .subtitle {
+  color: #2b5878;
+  opacity: 0.9;
+}
+
+/* Progress bar */
+.progress-wrap {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  transition: background 1s ease;
+}
+
+body.break-mode .progress-wrap {
+  background: rgba(43, 88, 120, 0.15);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 99px;
+  transition: width 1s linear, background 1s ease;
+}
+
+/* Progress bar istirahat: gradien biru */
+body.break-mode .progress-bar {
+  background: linear-gradient(90deg, #4a90c2, #7fb8dd, #a8d4f0);
+}
+
+.mode-switch {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 28px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px;
+  border-radius: 14px;
+  transition: background 1s ease;
+}
+
+body.break-mode .mode-switch {
+  background: rgba(43, 88, 120, 0.15);
+}
+
+.mode-switch button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Tombol switch saat istirahat: teks biru tua */
+body.break-mode .mode-switch button {
+  color: rgba(28, 61, 90, 0.7);
+}
+
+.mode-switch button.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Tombol aktif istirahat: biru muda */
+body.break-mode .mode-switch button.active {
+  background: rgba(74, 144, 194, 0.25);
+  color: #1c3d5a;
+  box-shadow: 0 4px 14px rgba(74, 144, 194, 0.3);
+}
+
+.controls {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s,
+              background 0.6s ease, color 0.6s ease, border-color 0.6s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn-primary {
+  flex: 2;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #7b2d42;               /* teks semi maroon saat fokus */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Tombol utama istirahat: biru muda */
+body.break-mode .btn-primary {
+  background: #a8d4f0;
+  color: #1c3d5a;
+  box-shadow: 0 8px 22px rgba(74, 144, 194, 0.35);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+body.break-mode .btn-primary:hover {
+  box-shadow: 0 10px 28px rgba(74, 144, 194, 0.5);
+}
+
+.btn-secondary {
+  flex: 1;
+  padding: 16px;
+  font-size: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Tombol sekunder istirahat */
+body.break-mode .btn-secondary {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(74, 144, 194, 0.4);
+  color: #1c3d5a;
+}
+
+body.break-mode .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.settings {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  font-size: 13px;
+  opacity: 0.85;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  transition: color 1s ease;
+}
+
+body.break-mode .settings {
+  color: #2b5878;
+}
+
+.settings label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings input {
+  width: 56px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.6s ease, border-color 0.6s ease, color 0.6s ease;
+}
+
+body.break-mode .settings input {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(74, 144, 194, 0.4);
+  color: #1c3d5a;
+}
+
+.settings input:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+body.break-mode .settings input:focus {
+  outline: 2px solid rgba(74, 144, 194, 0.6);
+}
+
+/* Tombol notifikasi */
+.notif-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  opacity: 0.85;
+}
+
+.notif-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+body.break-mode .notif-btn {
+  border-color: rgba(74, 144, 194, 0.45);
+  color: #1c3d5a;
+}
+
+body.break-mode .notif-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.notif-btn.granted {
+  border-color: rgba(56, 239, 125, 0.7);
+  background: rgba(56, 239, 125, 0.15);
+  cursor: default;
+}
+
+body.break-mode .notif-btn.granted {
+  border-color: rgba(74, 144, 194, 0.7);
+  background: rgba(74, 144, 194, 0.15);
+}
+
+.notif-btn.denied {
+  border-color: rgba(255, 120, 120, 0.7);
+  background: rgba(255, 120, 120, 0.12);
+  cursor: not-allowed;
+}
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  body {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .container {
+    padding: 28px 20px;
+    border-radius: 20px;
+    margin: auto 0;
+  }
+
+  .subtitle {
+    margin-bottom: 16px;
+  }
+
+  .progress-wrap {
+    margin-bottom: 22px;
+  }
+
+  .mode-switch {
+    margin-bottom: 20px;
+  }
+
+  .controls {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .btn-primary {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .btn-secondary {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .settings {
+    gap: 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 340px) {
+  .timer {
+    font-size: 2.6rem;
+  }
+
+  .container {
+    padding: 22px 14px;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+/* Mode landscape di HP */
+@media (max-height: 520px) and (orientation: landscape) {
+  body {
+    align-items: center;
+  }
+
+  .container {
+    padding: 18px 24px;
+    max-width: 560px;
+  }
+
+  .timer {
+    font-size: 2.8rem;
+  }
+
+  .subtitle {
+    margin-bottom: 10px;
+  }
+
+  .progress-wrap {
+    margin-bottom: 14px;
+  }
+
+  .mode-switch {
+    margin-bottom: 14px;
+  }
+
+  .controls {
+    margin-bottom: 14px;
+  }
+
+  .settings {
+    margin-bottom: 12px;
+  }
+}
